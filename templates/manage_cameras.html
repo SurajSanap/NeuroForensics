@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Manage Cameras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .content {
+            margin-left: 270px;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    {% include 'sidebar.html' %}
+    
+    <div class="content">
+        <h1>Registered Cameras</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <table>
+            <tr>
+                <th>Camera Name</th>
+                <th>Camera URL</th>
+                <th>Face Detection</th>
+                <th>Weapon Detection</th>
+                <th>Actions</th>
+            </tr>
+            {% for camera in cameras %}
+            <tr>
+                <td>{{ camera.camera_name }}</td>
+                <td>{{ camera.camera_url }}</td>
+                <td>{% if camera.enable_face_detection %} ✅ Enabled {% else %} ❌ Disabled {% endif %}</td>
+                <td>{% if camera.enable_weapon_detection %} ✅ Enabled {% else %} ❌ Disabled {% endif %}</td>
+                <td>
+                    <a href="{{ url_for('delete_camera', id=camera.id) }}" onclick="return confirm('Are you sure?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

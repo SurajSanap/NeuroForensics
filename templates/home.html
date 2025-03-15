@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Home - Criminal Detection System</title>
+</head>
+<body>
+    {% include 'sidebar.html' %}
+
+    <div class="content">
+        <h1>Welcome to the Criminal Detection System</h1>
+
+        {% if current_user.is_authenticated %}
+            <p>Hello, <strong>{{ current_user.username }}</strong>! You are logged in.</p>
+            <a href="{{ url_for('dashboard') }}">Go to Dashboard</a>
+        {% else %}
+            <p>Please <a href="{{ url_for('login') }}">Login</a> or <a href="{{ url_for('register') }}">Register</a> to continue.</p>
+        {% endif %}
+    </div>
+
+    <style>
+        .content {
+            margin-left: 270px;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+    </style>
+</body>
+</html>

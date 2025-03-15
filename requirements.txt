@@ -1,0 +1,11 @@
+tf-keras
+flask 
+flask-sqlalchemy 
+flask-migrate 
+flask-login 
+werkzeug 
+opencv-python 
+deepface
+ultralytics
+opencv-python
+numpy

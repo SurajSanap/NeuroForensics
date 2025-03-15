@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Live Camera</title>
+</head>
+<body>
+    {% include 'sidebar.html' %}
+    <h1>Live Camera Criminal Detection</h1>
+    <img src="{{ url_for('video_feed') }}" width="800">
+</body>
+</html>

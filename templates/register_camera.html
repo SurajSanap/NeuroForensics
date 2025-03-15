@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Register Camera</title>
+</head>
+<body>
+    {% include 'sidebar.html' %}
+    <div class="content">
+        <h1>Register a Camera</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('register_camera') }}" method="POST">
+            <label>Camera Name:</label>
+            <input type="text" name="camera_name" required><br><br>
+        
+            <label>Camera IP URL (RTSP/HTTP):</label>
+            <input type="text" name="camera_url" required><br><br>
+        
+            <label>Select Functionalities:</label><br>
+            <input type="checkbox" name="face_detection" value="true"> Face Detection <br>
+            <input type="checkbox" name="weapon_detection" value="true"> Weapon Detection <br><br>
+        
+            <button type="submit">Register Camera</button>
+        </form>
+        
+    </div>
+</body>
+</html>
