@@ -12,7 +12,8 @@ import cv2
 # Import models
 from models.database import db, User, Criminal, Camera
 from models.weapon_detection import detect_weapons
-from models.detection import detect_criminal
+
+from models.face_detection import detect_faces_and_save
 
 # Initialize Flask App
 app = Flask(__name__)
@@ -205,11 +206,10 @@ def video_feed(camera_id):
 def stream_camera(camera_url):
     logging.info(f"🔍 Attempting to open camera: {camera_url}")
     
-    # Ensure URL format
     if not camera_url.startswith("http") and not camera_url.startswith("rtsp"):
         camera_url = f"http://{camera_url}/video"
     
-    cap = cv2.VideoCapture(camera_url, cv2.CAP_FFMPEG)  # Using OpenCV with FFMPEG backend
+    cap = cv2.VideoCapture(camera_url, cv2.CAP_FFMPEG)
     
     if not cap.isOpened():
         logging.error(f"❌ ERROR: Could not open camera at {camera_url}")
@@ -217,16 +217,23 @@ def stream_camera(camera_url):
     
     logging.info(f"✅ Camera {camera_url} opened successfully")
     
+    save_path = "captured_faces"
+    os.makedirs(save_path, exist_ok=True)
+    
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
             logging.warning(f"⚠️ WARNING: No frame received from {camera_url}")
-            continue
+            break  # Exit the loop when no frames are received
+        
+        frame, detected_faces = detect_faces_and_save(frame, save_path)
         
         _, buffer = cv2.imencode('.jpg', frame)
         yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
     
     cap.release()
+    logging.info(f"📴 Camera {camera_url} closed successfully")
+
 
 @app.route('/weapon_video_feed/<int:camera_id>')
 @login_required

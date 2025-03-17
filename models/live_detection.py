@@ -1,6 +1,6 @@
 import cv2
 from flask import Response
-from models.detection import detect_criminal
+from models.face_detection import detect_criminal
 
 def generate_frames():
     camera = cv2.VideoCapture(0)  # Open webcam

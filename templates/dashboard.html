@@ -75,6 +75,7 @@
                             <img src="{{ url_for('video_feed', camera_id=camera.id) }}" alt="Face Detection Feed">
                         {% endif %}
 
+
                         {% if camera.enable_weapon_detection %}
                         <h4>Weapon Detection</h4>
                         <img src="{{ url_for('weapon_video_feed', camera_id=camera.id) }}?nocache={{ loop.index }}" width="800" alt="Live Video Stream">
