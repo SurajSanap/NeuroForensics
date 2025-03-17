@@ -1,3 +1,4 @@
+import logging
 import os
 from flask import Flask, render_template, request, redirect, flash, jsonify, url_for, Response
 from flask_sqlalchemy import SQLAlchemy
@@ -128,10 +129,9 @@ def register_camera():
     if request.method == 'POST':
         camera_name = request.form['camera_name']
         camera_url = request.form['camera_url']
-
         enable_face_detection = 'face_detection' in request.form
         enable_weapon_detection = 'weapon_detection' in request.form
-
+        
         new_camera = Camera(
             user_id=current_user.id,
             camera_name=camera_name,
@@ -142,12 +142,10 @@ def register_camera():
 
         db.session.add(new_camera)
         db.session.commit()
-
         flash("Camera Registered Successfully!", "success")
         return redirect(url_for('dashboard'))
 
     return render_template('register_camera.html')
-
 
 @app.route('/manage_cameras')
 @login_required
@@ -201,30 +199,33 @@ def video_feed(camera_id):
     camera = Camera.query.filter_by(id=camera_id, user_id=current_user.id).first()
     if not camera:
         return "Camera not found!", 404
-
     return Response(stream_camera(camera.camera_url), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 # Function to Stream Camera
 def stream_camera(camera_url):
     logging.info(f"🔍 Attempting to open camera: {camera_url}")
-
-    cap = cv2.VideoCapture(camera_url, cv2.CAP_FFMPEG)  # Using correct backend for streaming
-
+    
+    # Ensure URL format
+    if not camera_url.startswith("http") and not camera_url.startswith("rtsp"):
+        camera_url = f"http://{camera_url}/video"
+    
+    cap = cv2.VideoCapture(camera_url, cv2.CAP_FFMPEG)  # Using OpenCV with FFMPEG backend
+    
     if not cap.isOpened():
         logging.error(f"❌ ERROR: Could not open camera at {camera_url}")
         return
-
+    
     logging.info(f"✅ Camera {camera_url} opened successfully")
-
+    
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
             logging.warning(f"⚠️ WARNING: No frame received from {camera_url}")
             continue
-
+        
         _, buffer = cv2.imencode('.jpg', frame)
         yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
-
+    
     cap.release()
 
 @app.route('/weapon_video_feed/<int:camera_id>')
@@ -233,13 +234,12 @@ def weapon_video_feed(camera_id):
     camera = Camera.query.filter_by(id=camera_id, user_id=current_user.id).first()
     if not camera:
         return "Camera not found!", 404
-
-    print(f"🎥 Starting weapon detection stream for Camera ID: {camera_id}")
-
-    return Response(detect_weapons(camera.id, camera.camera_url), 
+    
+    logging.info(f"🎥 Starting weapon detection stream for Camera ID: {camera_id}")
+    
+    return Response(detect_weapons(camera.id, camera.camera_url),
                     mimetype='multipart/x-mixed-replace; boundary=frame',
                     headers={"Cache-Control": "no-cache"})
-
 
 if __name__ == '__main__':
     with app.app_context():
