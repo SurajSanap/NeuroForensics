@@ -1,8 +1,9 @@
 
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/246952ec-7f50-49da-a683-5cfb6d11a6b0" width="150">
+  <img src="https://github.com/user-attachments/assets/71a791f5-774f-4a2b-8767-a4aa26b5121a" width="150">
 </p>
+
 
 
 # NeuroForensics: AI-Powered Criminal Detection System
