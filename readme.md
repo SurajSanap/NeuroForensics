@@ -106,7 +106,7 @@ NeuroForensics/
 - **YOLO (You Only Look Once)** for object (weapon) detection.
 - **OpenCV** for real-time image processing.
 
-## SS
+## 🎦SS
 - 1.
 ![Detection](https://github.com/user-attachments/assets/d6e1100b-44da-46da-afaf-bb156e7423b8)
 
