@@ -6,12 +6,11 @@
 
 
 
-![Detection](https://github.com/user-attachments/assets/d6e1100b-44da-46da-afaf-bb156e7423b8)
-
 # NeuroForensics: AI-Powered Criminal Detection System
 
 ## 📌 Introduction
 NeuroForensics is an **AI-powered criminal detection system** that leverages **deep learning**, **OpenCV**, and **real-time surveillance** to enhance security operations. It integrates with security cameras, performs **facial recognition**, and detects **weapons** to assist law enforcement in proactive crime prevention.
+
 
 ## 🚀 Features
 ✅ **Real-time Video Processing** - Stream live camera feeds with OpenCV.  
@@ -106,6 +105,10 @@ NeuroForensics/
 - **DeepFace** for face recognition.
 - **YOLO (You Only Look Once)** for object (weapon) detection.
 - **OpenCV** for real-time image processing.
+
+## SS
+- 1.
+![Detection](https://github.com/user-attachments/assets/d6e1100b-44da-46da-afaf-bb156e7423b8)
 
 ## 📜 License
 This project is licensed under the MIT License.
