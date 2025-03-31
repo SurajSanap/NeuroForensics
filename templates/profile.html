@@ -1,14 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>User Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fonts and External CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     {% include 'sidebar.html' %}
+
     <div class="content">
-        <h1>User Profile</h1>
-        <p>Username: {{ current_user.username }}</p>
-        <p>Email: {{ current_user.email }}</p>
+        <div class="profile-container">
+            <h1>User Profile</h1>
+
+            <div class="profile-card">
+                <div class="profile-left">
+                    <img src="{{ url_for('static', filename='images/default-avatar.png') }}" alt="Profile Avatar">
+                </div>
+                <div class="profile-right">
+                    <p><strong>Username:</strong> {{ current_user.username }}</p>
+                    <p><strong>Email:</strong> {{ current_user.email }}</p>
+                    <p><strong>Member Since:</strong> {{ current_user.created_at.strftime('%B %d, %Y') if current_user.created_at else 'N/A' }}</p>
+
+                    <div class="profile-actions">
+                        <a href="#" class="btn">Edit Profile</a>
+                        <a href="#" class="btn btn-outline">Change Password</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

@@ -124,15 +124,23 @@ def premium():
     return render_template('premium.html')
 
 
-@app.route('/register_camera', methods=['GET', 'POST'])
+@app.route('/camera_management', methods=['GET', 'POST'])
 @login_required
-def register_camera():
+def camera_management():
     if request.method == 'POST':
-        camera_name = request.form['camera_name']
-        camera_url = request.form['camera_url']
+        camera_name = request.form.get('camera_name')
+        camera_ip = request.form.get('camera_ip')
+
+        if not camera_name or not camera_ip:
+            flash("Please provide both camera name and IP address", "danger")
+            return redirect(url_for('camera_management'))
+
+        # 🧠 Automatically format the full stream URL
+        camera_url = f"http://{camera_ip.strip()}/video"
+
         enable_face_detection = 'face_detection' in request.form
         enable_weapon_detection = 'weapon_detection' in request.form
-        
+
         new_camera = Camera(
             user_id=current_user.id,
             camera_name=camera_name,
@@ -144,15 +152,10 @@ def register_camera():
         db.session.add(new_camera)
         db.session.commit()
         flash("Camera Registered Successfully!", "success")
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('camera_management'))
 
-    return render_template('register_camera.html')
-
-@app.route('/manage_cameras')
-@login_required
-def manage_cameras():
     cameras = Camera.query.filter_by(user_id=current_user.id).all()
-    return render_template('manage_cameras.html', cameras=cameras)
+    return render_template('manage_register_cameras.html', cameras=cameras)
 
 @app.route('/delete_camera/<int:id>')
 @login_required
@@ -166,7 +169,7 @@ def delete_camera(id):
     else:
         flash("Unauthorized Action!", "danger")
 
-    return redirect(url_for('manage_cameras'))
+    return redirect(url_for('camera_management'))
 
 @app.route('/add_criminal', methods=['GET', 'POST'])
 @login_required
@@ -205,34 +208,32 @@ def video_feed(camera_id):
 # Function to Stream Camera
 def stream_camera(camera_url):
     logging.info(f"🔍 Attempting to open camera: {camera_url}")
-    
-    if not camera_url.startswith("http") and not camera_url.startswith("rtsp"):
-        camera_url = f"http://{camera_url}/video"
-    
+
     cap = cv2.VideoCapture(camera_url, cv2.CAP_FFMPEG)
-    
+
     if not cap.isOpened():
-        logging.error(f"❌ ERROR: Could not open camera at {camera_url}")
+        logging.error(f"❌ Could not open camera at {camera_url}")
+        yield b''  # yield empty to avoid crashing
         return
-    
-    logging.info(f"✅ Camera {camera_url} opened successfully")
-    
+
+    logging.info(f"✅ Connected to camera at {camera_url}")
+
     save_path = "captured_faces"
     os.makedirs(save_path, exist_ok=True)
-    
+
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
-            logging.warning(f"⚠️ WARNING: No frame received from {camera_url}")
-            break  # Exit the loop when no frames are received
-        
+            logging.warning(f"⚠️ No frame received from {camera_url}")
+            break
+
         frame, detected_faces = detect_faces_and_save(frame, save_path)
-        
         _, buffer = cv2.imencode('.jpg', frame)
+
         yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
-    
+
     cap.release()
-    logging.info(f"📴 Camera {camera_url} closed successfully")
+    logging.info(f"📴 Camera {camera_url} released")
 
 
 @app.route('/weapon_video_feed/<int:camera_id>')

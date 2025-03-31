@@ -1,31 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Register</title>
+    <meta charset="UTF-8">
+    <title>Register - Criminal Detection System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
-    <h2>Register</h2>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <p class="{{ category }}">{{ message }}</p>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    
-    <form action="{{ url_for('register') }}" method="POST">
-        <label>Username:</label>
-        <input type="text" name="username" required><br><br>
+<body class="auth-body">
+    <div class="login-container">
+        <h2>Register</h2>
 
-        <label>Email:</label>
-        <input type="email" name="email" required><br><br>
-        
-        <label>Password:</label>
-        <input type="password" name="password" required><br><br>
-        
-        <button type="submit">Register</button>
-    </form>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-    <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+        <form action="{{ url_for('register') }}" method="POST" class="auth-form">
+            <label for="username">Username</label>
+            <input type="text" name="username" required placeholder="Choose a username">
+
+            <label for="email">Email</label>
+            <input type="email" name="email" required placeholder="Enter your email">
+
+            <label for="password">Password</label>
+            <input type="password" name="password" required placeholder="Create a password">
+
+            <button type="submit" class="btn">Register</button>
+        </form>
+
+        <p class="auth-footer">
+            Already have an account? 
+            <a href="{{ url_for('login') }}" class="link">Login here</a>
+        </p>
+    </div>
 </body>
 </html>

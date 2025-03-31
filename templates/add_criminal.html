@@ -1,34 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Add Criminal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     {% include 'sidebar.html' %}
 
     <div class="content">
-        <h1>Add Criminal</h1>
+        <div class="form-container">
+            <h1>Add Criminal</h1>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <p class="{{ category }}">{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
 
-        <form action="{{ url_for('add_criminal') }}" method="POST" enctype="multipart/form-data">
-            <label>Name:</label>
-            <input type="text" name="name" required><br><br>
+            <form action="{{ url_for('add_criminal') }}" method="POST" enctype="multipart/form-data" class="auth-form">
+                <label for="name">Name:</label>
+                <input type="text" name="name" required placeholder="Full Name">
 
-            <label>Crime Details:</label>
-            <textarea name="crime_details" required></textarea><br><br>
+                <label for="crime_details">Crime Details:</label>
+                <textarea name="crime_details" required placeholder="Describe the crime..."></textarea>
 
-            <label>Upload Criminal Image:</label>
-            <input type="file" name="image" accept="image/*" required><br><br>
+                <label for="image">Upload Criminal Image:</label>
+                <input type="file" name="image" accept="image/*" required>
 
-            <button type="submit">Add Criminal</button>
-        </form>
+                <button type="submit" class="btn">Add Criminal</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>

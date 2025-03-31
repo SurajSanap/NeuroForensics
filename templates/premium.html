@@ -1,13 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Premium Features</title>
+    <meta charset="UTF-8">
+    <title>Premium Membership - Criminal Detection System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- External CSS & Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     {% include 'sidebar.html' %}
+
     <div class="content">
-        <h1>Premium Membership</h1>
-        <p>Coming Soon...</p>
+        <div class="premium-container">
+            <h1>Upgrade to Premium</h1>
+            <p class="subtext">Unlock advanced tools to boost your surveillance intelligence.</p>
+
+            <div class="plans">
+                <div class="plan-card">
+                    <h2>Free</h2>
+                    <ul>
+                        <li>✅ Face Detection</li>
+                        <li>✅ Add & Manage Cameras</li>
+                        <li>🚫 Weapon Detection</li>
+                        <li>🚫 Real-Time Alerts</li>
+                        <li>🚫 Access to Historical Logs</li>
+                    </ul>
+                    <p class="price">₹0/month</p>
+                    <button class="btn btn-outline" disabled>Current Plan</button>
+                </div>
+
+                <div class="plan-card premium">
+                    <h2>Pro</h2>
+                    <ul>
+                        <li>✅ Everything in Free</li>
+                        <li>✅ Weapon Detection</li>
+                        <li>✅ Real-Time Threat Alerts</li>
+                        <li>✅ Multi-Camera Live View</li>
+                        <li>✅ Activity Reports & History</li>
+                    </ul>
+                    <p class="price">₹499/month</p>
+                    <button class="btn">Upgrade Now</button>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

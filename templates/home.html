@@ -1,28 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Home - Criminal Detection System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Lottie CDN -->
+    <script src="https://unpkg.com/lottie-web@5.7.13/build/player/lottie.min.js"></script>
 </head>
 <body>
     {% include 'sidebar.html' %}
 
     <div class="content">
-        <h1>Welcome to the Criminal Detection System</h1>
+        <div class="welcome-text">
+            <h1>Welcome to the Criminal Detection System</h1>
 
-        {% if current_user.is_authenticated %}
-            <p>Hello, <strong>{{ current_user.username }}</strong>! You are logged in.</p>
-            <a href="{{ url_for('dashboard') }}">Go to Dashboard</a>
-        {% else %}
-            <p>Please <a href="{{ url_for('login') }}">Login</a> or <a href="{{ url_for('register') }}">Register</a> to continue.</p>
-        {% endif %}
+            {% if current_user.is_authenticated %}
+                <p>Hello, <strong>{{ current_user.username }}</strong>! You are logged in.</p>
+                <a href="{{ url_for('dashboard') }}" class="btn">Go to Dashboard</a>
+            {% else %}
+                <p>Please <a href="{{ url_for('login') }}" class="link">Login</a> or 
+                <a href="{{ url_for('register') }}" class="link">Register</a> to continue.</p>
+            {% endif %}
+        </div>
+
+        <!-- PNG Animation -->
+        
+        <div class="animation-box">
+            <img src="{{ url_for('static', filename='images/logoT.png') }}" alt="App Logo" class="logo-img">
+        </div>
+        
+        
     </div>
 
-    <style>
-        .content {
-            margin-left: 270px;
-            padding: 20px;
-            transition: margin-left 0.3s ease;
-        }
-    </style>
+    <!-- External JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+
+
+
 </body>
 </html>

@@ -1,74 +1,28 @@
 <!-- templates/sidebar.html -->
 <div class="sidebar" id="sidebar">
     <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+
     <h2>Navigation</h2>
     <ul>
         <li><a href="{{ url_for('home') }}">🏠 Home</a></li>
         <li><a href="{{ url_for('dashboard') }}">📊 Dashboard</a></li>
-        <li><a href="{{ url_for('register_camera') }}">📷 Register Camera</a></li>
-        <li><a href="{{ url_for('manage_cameras') }}">🎥 Manage Cameras</a></li>
+        <li><a href="{{ url_for('camera_management') }}">📷 Camera Management</a></li>
         <li><a href="{{ url_for('add_criminal') }}">🚔 Add Criminal</a></li>
-
         <li><a href="{{ url_for('profile') }}">👤 User Profile</a></li>
         <li><a href="{{ url_for('premium') }}">💎 Premium</a></li>
-        <li><a href="{{ url_for('logout') }}">🚪 Logout</a></li>
+        <li><a href="{{ url_for('logout') }}" onclick="return confirmLogout()">🚪 Logout</a></li>
+
     </ul>
 </div>
-
-<style>
-    /* Sidebar Styles */
-    .sidebar {
-        width: 250px;
-        height: 100vh;
-        position: fixed;
-        left: 0;
-        top: 0;
-        background: #111;
-        color: white;
-        padding: 20px;
-        transition: all 0.3s ease;
-        overflow-x: hidden;
-    }
-
-    .sidebar.closed {
-        width: 60px;  /* Minimized Width */
-        padding: 10px;
-    }
-
-    .sidebar.closed h2, 
-    .sidebar.closed ul li a {
-        display: none; /* Hide text when minimized */
-    }
-
-    .toggle-btn {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 20px;
-        cursor: pointer;
-        position: absolute;
-        top: 10px;
-        left: 10px;
-    }
-
-    /* Content area */
-    .content {
-        margin-left: 270px; /* Adjusted for sidebar */
-        padding: 20px;
-        transition: margin-left 0.3s ease;
-    }
-
-    .sidebar.closed + .content {
-        margin-left: 70px; /* Adjusted for minimized sidebar */
-    }
-</style>
 
 <script>
     function toggleSidebar() {
         let sidebar = document.getElementById("sidebar");
         sidebar.classList.toggle("closed");
-
-        let content = document.querySelector(".content");
-        content.classList.toggle("sidebar-minimized");
     }
+
+    function confirmLogout() {
+    return confirm("Are you sure you want to log out?");
+}
 </script>

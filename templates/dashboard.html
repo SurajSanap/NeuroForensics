@@ -1,55 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Dashboard - Criminal Detection</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .content {
-            margin-left: 270px;
-            padding: 20px;
-            transition: margin-left 0.3s ease;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        .camera-section {
-            background: #f4f4f4;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 5px;
-        }
-
-        .camera-feed {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .camera-card {
-            background: white;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .camera-card img {
-            width: 100%;
-            border-radius: 5px;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-
     {% include 'sidebar.html' %}
 
     <div class="content">
@@ -58,7 +17,7 @@
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <p class="{{ category }}">{{ message }}</p>
+                    <div class="flash-message {{ category }}">{{ message }}</div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
@@ -68,26 +27,23 @@
                 {% for camera in cameras %}
                     <div class="camera-card">
                         <h3>{{ camera.camera_name }}</h3>
-                        <p>IP: {{ camera.camera_url }}</p>
+                        <p><strong>IP:</strong> {{ camera.camera_url }}</p>
 
                         {% if camera.enable_face_detection %}
                             <h4>Face Detection</h4>
                             <img src="{{ url_for('video_feed', camera_id=camera.id) }}" alt="Face Detection Feed">
                         {% endif %}
 
-
                         {% if camera.enable_weapon_detection %}
-                        <h4>Weapon Detection</h4>
-                        <img src="{{ url_for('weapon_video_feed', camera_id=camera.id) }}?nocache={{ loop.index }}" width="800" alt="Live Video Stream">
-                        
+                            <h4>Weapon Detection</h4>
+                            <img src="{{ url_for('weapon_video_feed', camera_id=camera.id) }}?nocache={{ loop.index }}" alt="Weapon Detection Feed">
                         {% endif %}
                     </div>
                 {% endfor %}
             </div>
         {% else %}
-            <p>No cameras registered. <a href="{{ url_for('register_camera') }}">Register a Camera</a> to start live detection.</p>
+            <p>No cameras registered. <a href="{{ url_for('camera_management') }}" class="link">Register a Camera</a> to start live detection.</p>
         {% endif %}
     </div>
-
 </body>
 </html>
