@@ -109,6 +109,9 @@ NeuroForensics/
 ## 🎦SS
 - 1.
 ![Detection](https://github.com/user-attachments/assets/d6e1100b-44da-46da-afaf-bb156e7423b8)
+- 2.
+![image](https://github.com/user-attachments/assets/f20437c0-f837-4e34-b588-c3e87dd28892)
+
 
 ## 📜 License
 This project is licensed under the MIT License.
