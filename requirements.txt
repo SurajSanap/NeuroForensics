@@ -9,3 +9,4 @@ deepface
 ultralytics
 opencv-python
 numpy
+gunicorn
